@@ -1,0 +1,41 @@
+/* Custom Water Color Theme for Artist Portfolio */
+
+/* Custom CSS variables for water color palette */
+:root {
+    --water-sky: #f0f9ff;
+    --water-lavender: #faf5ff;
+    --water-pink: #fdf2f8;
+    --water-mint: #f0fdf4;
+    --water-yellow: #fffbeb;
+}
+
+/* Body styling for water color background */
+body {
+    background: linear-gradient(135deg,
+    var(--water-sky) 0%,
+    var(--water-lavender) 50%,
+    var(--water-pink) 100%
+    );
+    min-height: 100vh;
+}
+
+/* Custom water color card effect */
+.watercolour-card {
+    @apply bg-white/40 backdrop-blur-sm border border-white/30;
+    @apply shadow-lg rounded-2xl;
+    background: linear-gradient(135deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(240, 249, 255, 0.3) 50%,
+    rgba(250, 245, 255, 0.4) 100%
+    );
+}
+
+/* Floating animation for artistic elements */
+.floating {
+    animation: floating 6s ease-in-out infinite;
+}
+
+@keyframes floating {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}

@@ -1,35 +1,33 @@
 {
-  "kind": "singleType",
-  "collectionName": "artist_statement",
+  "kind": "collectionType",
+  "collectionName": "artist_statements",
   "info": {
     "singularName": "artist-statement",
     "pluralName": "artist-statements",
-    "displayName": "Artist Statement",
-    "description": "The artist's statement and bio"
+    "displayName": "Artist Statement"
   },
   "options": {
-    "draftAndPublish": true,
-    "timestamped": true
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
     "statement": {
-      "type": "richtext",
+      "type": "blocks",
       "required": true
     },
     "biography": {
-      "type": "richtext",
+      "type": "blocks",
       "required": true
     },
     "profileImage": {
       "type": "media",
       "multiple": false,
-      "required": false,
-      "allowedTypes": ["images"]
-    },
-    "socialLinks": {
-      "type": "json",
-      "required": false
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     }
   }
 }

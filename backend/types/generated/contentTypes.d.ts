@@ -107,43 +107,6 @@ export interface AdminApiTokenPermission extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface AdminAuditLog extends Struct.CollectionTypeSchema {
-  collectionName: 'strapi_audit_logs';
-  info: {
-    displayName: 'Audit Log';
-    pluralName: 'audit-logs';
-    singularName: 'audit-log';
-  };
-  options: {
-    draftAndPublish: false;
-    timestamps: false;
-  };
-  pluginOptions: {
-    'content-manager': {
-      visible: false;
-    };
-    'content-type-builder': {
-      visible: false;
-    };
-  };
-  attributes: {
-    action: Schema.Attribute.String & Schema.Attribute.Required;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    date: Schema.Attribute.DateTime & Schema.Attribute.Required;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<'oneToMany', 'admin::audit-log'> &
-      Schema.Attribute.Private;
-    payload: Schema.Attribute.JSON;
-    publishedAt: Schema.Attribute.DateTime;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user: Schema.Attribute.Relation<'oneToOne', 'admin::user'>;
-  };
-}
-
 export interface AdminPermission extends Struct.CollectionTypeSchema {
   collectionName: 'admin_permissions';
   info: {
@@ -411,20 +374,18 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 }
 
 export interface ApiArtistStatementArtistStatement
-  extends Struct.SingleTypeSchema {
-  collectionName: 'artist_statement';
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'artist_statements';
   info: {
-    description: "The artist's statement and bio";
     displayName: 'Artist Statement';
     pluralName: 'artist-statements';
     singularName: 'artist-statement';
   };
   options: {
     draftAndPublish: true;
-    timestamped: true;
   };
   attributes: {
-    biography: Schema.Attribute.RichText & Schema.Attribute.Required;
+    biography: Schema.Attribute.Blocks & Schema.Attribute.Required;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -434,10 +395,11 @@ export interface ApiArtistStatementArtistStatement
       'api::artist-statement.artist-statement'
     > &
       Schema.Attribute.Private;
-    profileImage: Schema.Attribute.Media<'images'>;
+    profileImage: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios'
+    >;
     publishedAt: Schema.Attribute.DateTime;
-    socialLinks: Schema.Attribute.JSON;
-    statement: Schema.Attribute.RichText & Schema.Attribute.Required;
+    statement: Schema.Attribute.Blocks & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -447,7 +409,6 @@ export interface ApiArtistStatementArtistStatement
 export interface ApiArtworkArtwork extends Struct.CollectionTypeSchema {
   collectionName: 'artworks';
   info: {
-    description: "Artist's artwork posts with images and details";
     displayName: 'Artwork';
     pluralName: 'artworks';
     singularName: 'artwork';
@@ -456,32 +417,34 @@ export interface ApiArtworkArtwork extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    additionalImages: Schema.Attribute.Media<'images', true>;
+    additionalImages: Schema.Attribute.Media<
+      'images' | 'files' | 'videos' | 'audios',
+      true
+    >;
     category: Schema.Attribute.Enumeration<
       ['Paintings', 'Digital Art', 'Experimental']
     > &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'Paintings'>;
+      Schema.Attribute.Required;
     comments: Schema.Attribute.Relation<'oneToMany', 'api::comment.comment'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.RichText;
+    description: Schema.Attribute.Blocks;
     featured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    image: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
+    image: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::artwork.artwork'
     > &
       Schema.Attribute.Private;
+    published: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     publishedAt: Schema.Attribute.DateTime;
     slug: Schema.Attribute.UID<'title'> & Schema.Attribute.Required;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        maxLength: 255;
-      }>;
+      Schema.Attribute.Unique;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -491,14 +454,12 @@ export interface ApiArtworkArtwork extends Struct.CollectionTypeSchema {
 export interface ApiCommentComment extends Struct.CollectionTypeSchema {
   collectionName: 'comments';
   info: {
-    description: 'Moderated comments on artwork';
     displayName: 'Comment';
     pluralName: 'comments';
     singularName: 'comment';
   };
   options: {
-    draftAndPublish: false;
-    timestamped: true;
+    draftAndPublish: true;
   };
   attributes: {
     approved: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -511,7 +472,7 @@ export interface ApiCommentComment extends Struct.CollectionTypeSchema {
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 100;
       }>;
-    content: Schema.Attribute.Text &
+    content: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 1000;
@@ -537,28 +498,25 @@ export interface ApiContactMessageContactMessage
   extends Struct.CollectionTypeSchema {
   collectionName: 'contact_messages';
   info: {
-    description: 'Messages sent through the contact form';
     displayName: 'Contact Message';
     pluralName: 'contact-messages';
     singularName: 'contact-message';
   };
   options: {
-    draftAndPublish: false;
-    timestamped: true;
+    draftAndPublish: true;
   };
   attributes: {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     email: Schema.Attribute.Email & Schema.Attribute.Required;
-    ipAddress: Schema.Attribute.String & Schema.Attribute.Private;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::contact-message.contact-message'
     > &
       Schema.Attribute.Private;
-    message: Schema.Attribute.Text &
+    message: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
         maxLength: 2000;
@@ -1085,7 +1043,6 @@ declare module '@strapi/strapi' {
     export interface ContentTypeSchemas {
       'admin::api-token': AdminApiToken;
       'admin::api-token-permission': AdminApiTokenPermission;
-      'admin::audit-log': AdminAuditLog;
       'admin::permission': AdminPermission;
       'admin::role': AdminRole;
       'admin::transfer-token': AdminTransferToken;

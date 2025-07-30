@@ -4,19 +4,17 @@
   "info": {
     "singularName": "contact-message",
     "pluralName": "contact-messages",
-    "displayName": "Contact Message",
-    "description": "Messages sent through the contact form"
+    "displayName": "Contact Message"
   },
   "options": {
-    "draftAndPublish": false,
-    "timestamped": true
+    "draftAndPublish": true
   },
   "pluginOptions": {},
   "attributes": {
     "name": {
       "type": "string",
-      "required": true,
-      "maxLength": 100
+      "maxLength": 100,
+      "required": true
     },
     "email": {
       "type": "email",
@@ -27,9 +25,9 @@
       "maxLength": 200
     },
     "message": {
-      "type": "text",
-      "required": true,
-      "maxLength": 2000
+      "type": "string",
+      "maxLength": 2000,
+      "required": true
     },
     "read": {
       "type": "boolean",
@@ -38,10 +36,6 @@
     "replied": {
       "type": "boolean",
       "default": false
-    },
-    "ipAddress": {
-      "type": "string",
-      "private": true
     }
   }
 }

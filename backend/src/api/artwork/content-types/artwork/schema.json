@@ -4,8 +4,7 @@
   "info": {
     "singularName": "artwork",
     "pluralName": "artworks",
-    "displayName": "Artwork",
-    "description": "Artist's artwork posts with images and details"
+    "displayName": "Artwork"
   },
   "options": {
     "draftAndPublish": true
@@ -14,16 +13,20 @@
   "attributes": {
     "title": {
       "type": "string",
-      "maxLength": 255,
-      "required": true
+      "required": true,
+      "unique": true
     },
     "description": {
-      "type": "richtext"
+      "type": "blocks"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "title",
+      "required": true
     },
     "category": {
       "type": "enumeration",
       "required": true,
-      "default": "Paintings",
       "enum": [
         "Paintings",
         "Digital Art",
@@ -35,25 +38,29 @@
       "multiple": false,
       "required": true,
       "allowedTypes": [
-        "images"
+        "images",
+        "files",
+        "videos",
+        "audios"
       ]
     },
     "additionalImages": {
       "type": "media",
       "multiple": true,
-      "required": false,
       "allowedTypes": [
-        "images"
+        "images",
+        "files",
+        "videos",
+        "audios"
       ]
-    },
-    "slug": {
-      "type": "uid",
-      "targetField": "title",
-      "required": true
     },
     "featured": {
       "type": "boolean",
       "default": false
+    },
+    "published": {
+      "type": "boolean",
+      "default": true
     },
     "comments": {
       "type": "relation",
