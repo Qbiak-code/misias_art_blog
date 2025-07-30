@@ -1,0 +1,46 @@
+{
+  "kind": "collectionType",
+  "collectionName": "comments",
+  "info": {
+    "singularName": "comment",
+    "pluralName": "comments",
+    "displayName": "Comment",
+    "description": "Moderated comments on artwork"
+  },
+  "options": {
+    "draftAndPublish": false,
+    "timestamped": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "content": {
+      "type": "text",
+      "required": true,
+      "maxLength": 1000
+    },
+    "authorName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 100
+    },
+    "authorEmail": {
+      "type": "email",
+      "required": true,
+      "private": true
+    },
+    "approved": {
+      "type": "boolean",
+      "default": false
+    },
+    "artwork": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::artwork.artwork",
+      "inversedBy": "comments"
+    },
+    "ipAddress": {
+      "type": "string",
+      "private": true
+    }
+  }
+}
