@@ -7,7 +7,7 @@
 
 <script setup>
 // Import your custom CSS
-import '../assets/css/main.css'
+import './assets/css/main.css'
 
 // Global head configuration
 useHead({

@@ -1,41 +1,492 @@
-/* Custom Water Color Theme for Artist Portfolio */
+/* EXCEPTIONAL MODERN ARTIST PORTFOLIO 2025 */
+/* Inspired by glassmorphism, neumorphism, and brutalist trends */
 
-/* Custom CSS variables for water color palette */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800;900&display=swap');
+
 :root {
-    --water-sky: #f0f9ff;
-    --water-lavender: #faf5ff;
-    --water-pink: #fdf2f8;
-    --water-mint: #f0fdf4;
-    --water-yellow: #fffbeb;
+    /* Your daughter's beautiful palette */
+    --pink-peony: #f4a6cd;
+    --mustard: #f4a261;
+    --coral-pink: #e76f51;
+    --pale-orange: #f4a261;
+    --pale-peach: #faf0e6;
+
+    /* Modern gradients */
+    --gradient-hero: linear-gradient(135deg, #faf0e6 0%, #f4a6cd15 25%, #f4a26110 50%, #e76f5108 75%, #faf0e6 100%);
+    --gradient-glass: linear-gradient(135deg, rgba(250, 240, 230, 0.25) 0%, rgba(244, 166, 205, 0.15) 100%);
+    --gradient-border: linear-gradient(135deg, var(--pink-peony) 0%, var(--mustard) 50%, var(--coral-pink) 100%);
+
+    /* Shadows for depth */
+    --shadow-soft: 0 8px 32px rgba(231, 111, 81, 0.08);
+    --shadow-medium: 0 16px 64px rgba(244, 166, 205, 0.12);
+    --shadow-strong: 0 32px 128px rgba(231, 111, 81, 0.15);
+    --shadow-brutal: 8px 8px 0px rgba(231, 111, 81, 0.3);
 }
 
-/* Body styling for water color background */
+/* Reset and base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: linear-gradient(135deg,
-    var(--water-sky) 0%,
-    var(--water-lavender) 50%,
-    var(--water-pink) 100%
-    );
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
     min-height: 100vh;
+    line-height: 1.6;
+    color: #2d3748;
+    overflow-x: hidden;
 }
 
-/* Custom water color card effect */
-.watercolour-card {
-    @apply bg-white/40 backdrop-blur-sm border border-white/30;
-    @apply shadow-lg rounded-2xl;
-    background: linear-gradient(135deg,
-    rgba(255, 255, 255, 0.4) 0%,
-    rgba(240, 249, 255, 0.3) 50%,
-    rgba(250, 245, 255, 0.4) 100%
-    );
+/* MODERN GLASSMORPHISM CARDS */
+.glass-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 24px;
+    box-shadow: var(--shadow-medium);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Floating animation for artistic elements */
-.floating {
-    animation: floating 6s ease-in-out infinite;
+.glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gradient-border);
+    opacity: 0.6;
 }
 
-@keyframes floating {
-    0%, 100% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
+.glass-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+    backdrop-filter: blur(25px) saturate(200%);
+    border-color: rgba(244, 166, 205, 0.3);
+}
+
+/* BRUTAL MODERN HERO */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background:
+            radial-gradient(circle at 20% 20%, rgba(244, 166, 205, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 80% 80%, rgba(231, 111, 81, 0.05) 0%, transparent 50%),
+            var(--gradient-hero);
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 1200px;
+    padding: 0 2rem;
+    z-index: 2;
+}
+
+.hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(4rem, 8vw, 8rem);
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 2rem;
+    background: var(--gradient-border);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+    padding: 0.2rem 0;
+}
+
+.hero-subtitle {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    color: #4a5568;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* MODERN NAVIGATION */
+.modern-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    backdrop-filter: blur(20px) saturate(180%);
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+.nav-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    background: var(--gradient-border);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #4a5568;
+    font-weight: 500;
+    position: relative;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-border);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.nav-link:hover {
+    color: var(--coral-pink);
+    background: rgba(244, 166, 205, 0.05);
+}
+
+/* EXCEPTIONAL BUTTONS */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: var(--gradient-border);
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-medium);
+}
+
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(15px);
+    color: #2d3748;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    border: 2px solid rgba(244, 166, 205, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-secondary:hover {
+    background: rgba(244, 166, 205, 0.15);
+    border-color: var(--pink-peony);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+    color: var(--coral-pink);
+}
+
+/* MODERN ARTWORK GRID */
+.artwork-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.artwork-card {
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    cursor: pointer;
+    position: relative;
+}
+
+.artwork-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-border);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+    transform-origin: left;
+}
+
+.artwork-card:hover::before {
+    transform: scaleX(1);
+}
+
+.artwork-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: var(--shadow-strong);
+    border-color: rgba(244, 166, 205, 0.25);
+}
+
+.artwork-image {
+    aspect-ratio: 1;
+    background: var(--gradient-glass);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.artwork-content {
+    padding: 1.5rem;
+}
+
+.artwork-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #2d3748;
+}
+
+.artwork-category {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.category-paintings {
+    background: rgba(244, 166, 205, 0.15);
+    color: var(--pink-peony);
+    border: 1px solid rgba(244, 166, 205, 0.25);
+}
+
+.category-digital {
+    background: rgba(244, 162, 97, 0.15);
+    color: var(--mustard);
+    border: 1px solid rgba(244, 162, 97, 0.25);
+}
+
+.category-experimental {
+    background: rgba(231, 111, 81, 0.15);
+    color: var(--coral-pink);
+    border: 1px solid rgba(231, 111, 81, 0.25);
+}
+
+/* FLOATING ANIMATIONS */
+.floating-1 {
+    animation: float-gentle 6s ease-in-out infinite;
+}
+
+.floating-2 {
+    animation: float-subtle 8s ease-in-out infinite -2s;
+}
+
+.floating-3 {
+    animation: float-organic 7s ease-in-out infinite -4s;
+}
+
+@keyframes float-gentle {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(1deg); }
+}
+
+@keyframes float-subtle {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(-0.5deg); }
+}
+
+@keyframes float-organic {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    25% { transform: translateY(-8px) rotate(0.5deg); }
+    75% { transform: translateY(-12px) rotate(-0.3deg); }
+}
+
+/* SECTION SPACING */
+.section {
+    padding: 6rem 0;
+    position: relative;
+}
+
+.section-inner {
+    padding: 4rem 3rem;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* MOBILE MENU */
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-left: 1px solid rgba(244, 166, 205, 0.2);
+    transition: right 0.3s ease;
+    z-index: 1001;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.mobile-menu.open {
+    right: 0;
+}
+
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.mobile-menu-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mobile-nav-link {
+    display: block;
+    padding: 1rem 0;
+    color: #2d3748;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    border-bottom: 1px solid rgba(244, 166, 205, 0.1);
+    transition: color 0.3s ease;
+}
+
+.mobile-nav-link:hover {
+    color: var(--coral-pink);
+}
+
+/* MODERN SCROLLBAR */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(250, 240, 230, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--gradient-border);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, var(--coral-pink) 0%, var(--pink-peony) 100%);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .artwork-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+}
+
+/* SMOOTH SCROLLING */
+html {
+    scroll-behavior: smooth;
+}
+
+/* SELECTION STYLING */
+::selection {
+    background: rgba(244, 166, 205, 0.3);
+    color: #2d3748;
 }

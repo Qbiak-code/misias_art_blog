@@ -3,6 +3,9 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-30',
   devtools: { enabled: true },
 
+  // Explicitly enable pages (should be default but let's be explicit)
+  pages: true,
+
   components: true,
 
   // Add the required modules
