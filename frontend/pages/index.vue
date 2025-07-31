@@ -184,9 +184,11 @@
                   {{ artwork.title }}
                 </h3>
 
+                <div class="artwork-category-container">
                 <span class="artwork-category" :class="getCategoryClass(artwork.category)">
                   {{ artwork.category }}
                 </span>
+                </div>
 
                 <p class="text-gray-600 leading-relaxed mb-4 line-clamp-3">
                   {{ getCleanDescription(artwork) }}

@@ -395,6 +395,10 @@ body {
     flex-shrink: 0;
 }
 
+.artwork-category-container {
+    margin: 1rem 0 1rem 0;
+}
+
 .category-paintings {
     background: rgba(244, 166, 205, 0.15);
     color: var(--pink-peony);
