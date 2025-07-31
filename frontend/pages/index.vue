@@ -67,7 +67,7 @@
           Discover a vibrant world where color meets emotion,
           and every brushstroke tells a story of boundless creativity.
         </p>
-        <div class="button-container flex flex-col sm:flex-row gap-8 justify-center items-center">
+        <div class="flex flex-col sm:flex-row gap-12 justify-center items-center mt-12">
           <NuxtLink to="/gallery" class="btn-primary">
             <UIcon name="i-heroicons-eye" class="h-5 w-5" />
             Explore Collection
@@ -215,32 +215,49 @@
       </div>
     </section>
 
-    <!-- CALL TO ACTION -->
-    <section class="section">
+    <!-- ENHANCED CALL TO ACTION -->
+    <section class="section relative overflow-hidden">
       <div class="container">
-        <div class="glass-card floating-3 section-inner text-center max-w-4xl mx-auto">
-          <h2 class="text-4xl font-bold mb-8 font-['Playfair_Display']"
-              style="background: linear-gradient(135deg, #f4a6cd 0%, #f4a261 50%, #e76f51 100%);
-                     -webkit-background-clip: text;
-                     -webkit-text-fill-color: transparent;
-                     background-clip: text;
-                     line-height: 1.2;
-                     padding: 0.2rem 0;">
-            Let's Create Together
-          </h2>
-          <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto leading-relaxed">
-            Whether you're interested in commissioning a piece, collaborating on a project,
-            or simply want to share your thoughts about art—I'd love to hear from you.
-          </p>
-          <div class="button-container flex flex-col sm:flex-row gap-8 justify-center">
-            <NuxtLink to="/contact" class="btn-primary">
-              <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-5 w-5" />
-              Start a Conversation
-            </NuxtLink>
-            <NuxtLink to="/about" class="btn-secondary">
-              <UIcon name="i-heroicons-user" class="h-5 w-5" />
-              Learn My Story
-            </NuxtLink>
+        <div class="cta-section floating-3">
+          <!-- Decorative Elements -->
+          <div class="cta-decoration"></div>
+          
+          <div class="cta-content">
+            <div class="cta-header">
+              <h2 class="cta-title">
+                Let's Create Together
+              </h2>
+              <div class="cta-subtitle-wrapper">
+                <p class="cta-subtitle">
+                  Whether you're interested in commissioning a piece, collaborating on a project,
+                  or simply want to share your thoughts about art—I'd love to hear from you.
+                </p>
+              </div>
+            </div>
+            
+            <div class="cta-actions">
+              <NuxtLink to="/contact" class="cta-btn primary">
+                <div class="cta-btn-icon">
+                  <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-5 w-5" />
+                </div>
+                <div class="cta-btn-content">
+                  <span class="cta-btn-title">Start a Conversation</span>
+                  <span class="cta-btn-desc">Get in touch about your ideas</span>
+                </div>
+                <UIcon name="i-heroicons-arrow-right" class="h-4 w-4 cta-btn-arrow" />
+              </NuxtLink>
+              
+              <NuxtLink to="/about" class="cta-btn secondary">
+                <div class="cta-btn-icon">
+                  <UIcon name="i-heroicons-user" class="h-5 w-5" />
+                </div>
+                <div class="cta-btn-content">
+                  <span class="cta-btn-title">Learn My Story</span>
+                  <span class="cta-btn-desc">Discover the artist behind the art</span>
+                </div>
+                <UIcon name="i-heroicons-arrow-right" class="h-4 w-4 cta-btn-arrow" />
+              </NuxtLink>
+            </div>
           </div>
         </div>
       </div>
