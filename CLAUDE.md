@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 📋 Development Tracking
 
-**IMPORTANT**: Always read `/PROJECT_PROGRESS.md` alongside this file before starting work. 
+**IMPORTANT**: Always read `/.context/PROJECT_PROGRESS.md` alongside this file before starting work. 
 
 - **CLAUDE.md** (this file): Technical architecture, commands, and project structure
 - **PROJECT_PROGRESS.md**: Current development state, active issues, completed work, and session context

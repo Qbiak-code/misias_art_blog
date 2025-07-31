@@ -3,7 +3,11 @@
 ## Project Context
 You are working on a full-stack art portfolio blog for a young artist. This file provides context for GitHub Copilot to understand the project architecture and coding patterns.
 
-**IMPORTANT**: Always read `/PROJECT_PROGRESS.md` and `/CLAUDE.md` for complete project context and current development state.
+**IMPORTANT**: Always read OMPLETE documentation `/PROJECT_PROGRESS.md` and `/CLAUDE.md` for complete project context and current development state before starting work.
+- Read FULL PROJECT_PROGRESS.md (not just first 50 lines)
+- Read FULL CLAUDE.md
+- Check .context/ directory if it exists
+- Look for "Recommended Next Steps" sections in documentation
 
 ## Tech Stack
 - **Frontend**: Nuxt 4.0.2 + @nuxt/ui + Tailwind CSS v4.0
