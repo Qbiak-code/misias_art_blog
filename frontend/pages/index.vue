@@ -9,8 +9,12 @@
           <li><NuxtLink to="/about" class="nav-link">About</NuxtLink></li>
           <li><NuxtLink to="/contact" class="nav-link">Contact</NuxtLink></li>
         </ul>
-        <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors">
-          <UIcon name="i-heroicons-bars-3" class="h-6 w-6" />
+        <button @click="toggleMobileMenu" class="md:hidden mobile-menu-button">
+          <div class="hamburger-icon" :class="{ active: mobileMenuOpen }">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </button>
       </div>
     </nav>
@@ -18,15 +22,38 @@
     <!-- MOBILE MENU -->
     <div class="mobile-menu-overlay" :class="{ open: mobileMenuOpen }" @click="closeMobileMenu"></div>
     <div class="mobile-menu" :class="{ open: mobileMenuOpen }">
-      <div class="flex justify-between items-center mb-8">
-        <span class="font-bold text-xl">Menu</span>
-        <button @click="closeMobileMenu" class="p-2 hover:bg-gray-100 rounded-lg">
-          <UIcon name="i-heroicons-x-mark" class="h-6 w-6" />
+      <div class="mobile-menu-header">
+        <div class="mobile-menu-logo">
+          <span class="mobile-menu-title">Misia's Art</span>
+          <span class="mobile-menu-subtitle">Portfolio</span>
+        </div>
+        <button @click="closeMobileMenu" class="mobile-close-button">
+          <UIcon name="i-heroicons-x-mark" class="h-5 w-5" />
         </button>
       </div>
-      <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">Gallery</NuxtLink>
-      <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">About</NuxtLink>
-      <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">Contact</NuxtLink>
+      
+      <nav class="mobile-nav-container">
+        <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
+          <UIcon name="i-heroicons-squares-2x2" class="mobile-nav-icon" />
+          <span>Gallery</span>
+          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
+        </NuxtLink>
+        <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
+          <UIcon name="i-heroicons-user" class="mobile-nav-icon" />
+          <span>About</span>
+          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
+        </NuxtLink>
+        <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
+          <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="mobile-nav-icon" />
+          <span>Contact</span>
+          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
+        </NuxtLink>
+      </nav>
+      
+      <div class="mobile-menu-footer">
+        <div class="mobile-footer-decoration"></div>
+        <p class="mobile-footer-text">Art that speaks to the soul</p>
+      </div>
     </div>
 
     <!-- BRUTAL MODERN HERO SECTION -->
@@ -40,7 +67,7 @@
           Discover a vibrant world where color meets emotion,
           and every brushstroke tells a story of boundless creativity.
         </p>
-        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div class="button-container flex flex-col sm:flex-row gap-8 justify-center items-center">
           <NuxtLink to="/gallery" class="btn-primary">
             <UIcon name="i-heroicons-eye" class="h-5 w-5" />
             Explore Collection
@@ -165,18 +192,18 @@
                   {{ getCleanDescription(artwork) }}
                 </p>
 
-                <!-- Artwork Actions -->
-                <div class="flex justify-between items-center pt-4 border-t border-white/10">
-                  <button @click.stop="openLightbox(artwork)" class="text-coral-pink hover:text-pink-peony font-medium transition-colors flex items-center gap-2">
+                <!-- Modern Artwork Actions -->
+                <div class="artwork-actions">
+                  <button @click.stop="openLightbox(artwork)" class="artwork-action-btn primary">
                     <UIcon name="i-heroicons-eye" class="h-4 w-4" />
-                    View Details
+                    <span>View Details</span>
                   </button>
-                  <div class="flex gap-3">
-                    <button @click.stop="toggleFavorite(artwork)" class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
-                      <UIcon name="i-heroicons-heart" class="h-4 w-4 group-hover/btn:text-pink-peony transition-colors" />
+                  <div class="artwork-action-icons">
+                    <button @click.stop="toggleFavorite(artwork)" class="artwork-icon-btn" title="Add to favorites">
+                      <UIcon name="i-heroicons-heart" class="h-4 w-4" />
                     </button>
-                    <button @click.stop="shareArtwork(artwork)" class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
-                      <UIcon name="i-heroicons-share" class="h-4 w-4 group-hover/btn:text-pink-peony transition-colors" />
+                    <button @click.stop="shareArtwork(artwork)" class="artwork-icon-btn" title="Share artwork">
+                      <UIcon name="i-heroicons-share" class="h-4 w-4" />
                     </button>
                   </div>
                 </div>
@@ -205,7 +232,7 @@
             Whether you're interested in commissioning a piece, collaborating on a project,
             or simply want to share your thoughts about art—I'd love to hear from you.
           </p>
-          <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <div class="button-container flex flex-col sm:flex-row gap-8 justify-center">
             <NuxtLink to="/contact" class="btn-primary">
               <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-5 w-5" />
               Start a Conversation
