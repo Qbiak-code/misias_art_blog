@@ -3,7 +3,7 @@
     <!-- MODERN GLASSMORPHISM NAVIGATION -->
     <nav class="modern-nav">
       <div class="nav-content">
-        <NuxtLink to="/" class="nav-logo">Artist Portfolio</NuxtLink>
+        <NuxtLink to="/" class="nav-logo">Misia's Art Portfolio</NuxtLink>
         <ul class="nav-links">
           <li><NuxtLink to="/" class="nav-link">Gallery</NuxtLink></li>
           <li><NuxtLink to="/about" class="nav-link">About</NuxtLink></li>
@@ -459,11 +459,11 @@ onMounted(() => {
 
 // SEO
 useHead({
-  title: 'Exceptional Artist Portfolio - Modern Art Collection',
+  title: "Exceptional Misia's Art Portfolio - Modern Art Collection",
   meta: [
     { name: 'description', content: 'Discover an exceptional collection of contemporary paintings and digital art. Experience color, emotion, and creativity through a modern lens.' },
     { name: 'keywords', content: 'modern art, contemporary artist, paintings, digital art, creative portfolio, art collection' },
-    { property: 'og:title', content: 'Exceptional Artist Portfolio' },
+    { property: 'og:title', content: "Exceptional Misia's Art Portfolio" },
     { property: 'og:description', content: 'Experience art that speaks to the soul through vibrant colors and emotional storytelling.' },
     { property: 'og:type', content: 'website' }
   ]
