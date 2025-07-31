@@ -1,0 +1,552 @@
+/* RESPONSIVE CSS - Misia's Art Portfolio */
+/* Mobile-first responsive breakpoints and device-specific styles */
+
+/* LIGHTBOX MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+    .lightbox-modal {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        max-height: 95vh;
+    }
+    
+    .lightbox-image-section {
+        padding: 1rem;
+        max-height: 35vh;
+    }
+    
+    .content-header-fixed {
+        padding: 1.5rem 1rem 1rem;
+    }
+    
+    .mobile-header {
+        display: block;
+    }
+    
+    .desktop-header {
+        display: none;
+    }
+    
+    .artwork-title {
+        font-size: 1.75rem;
+        margin-bottom: 0;
+        text-align: left;
+        flex: 1;
+    }
+    
+    .artwork-date-text {
+        text-align: left;
+        margin: 0;
+        flex: 1;
+    }
+    
+    .content-scroll-area {
+        padding: 1rem;
+        gap: 1.25rem;
+    }
+    
+    .content-description {
+        padding: 0.75rem 0;
+        text-align: center;
+    }
+    
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* MOBILE STYLES (Default - up to 639px) */
+/* Base styles are mobile-first in main.css */
+
+/* SMALL TABLETS (640px and up) */
+@media (min-width: 640px) {
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .hero-title {
+        font-size: 3.5rem;
+    }
+
+    .cta-actions {
+        max-width: 600px;
+    }
+
+    .cta-btn {
+        min-width: 450px;
+    }
+
+    .cta-title {
+        font-size: 3.2rem;
+    }
+
+    .cta-section {
+        padding: 3rem 2rem;
+    }
+
+    .cta-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .cta-btn {
+        padding: 1.25rem 1.5rem;
+    }
+}
+
+/* TABLETS (768px and up) */
+@media (min-width: 768px) {
+    .nav-links {
+        display: flex;
+    }
+
+    .mobile-menu-button {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 4rem;
+    }
+
+    .artwork-grid {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .container {
+        padding: 0 2rem;
+    }
+
+    /* Mobile lightbox fixes don't apply on tablets+ */
+    .lightbox-content {
+        width: 90vw;
+        max-height: 90vh;
+        margin: 5vh auto;
+    }
+
+    .lightbox-image {
+        max-height: 60vh;
+    }
+
+    .lightbox-info {
+        padding: 1.5rem 2rem 2rem 2rem;
+        max-height: none;
+        overflow-y: visible;
+    }
+
+    .lightbox-info::after {
+        display: none;
+    }
+
+    .lightbox-header {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1.5rem;
+        flex-wrap: nowrap;
+    }
+
+    .lightbox-actions {
+        gap: 0.75rem;
+    }
+
+    .lightbox-close {
+        top: 1rem;
+        right: 1rem;
+        width: 40px;
+        height: 40px;
+    }
+
+    .btn-primary, .btn-secondary {
+        min-height: auto;
+    }
+}
+
+/* DESKTOP (1024px and up) */
+@media (min-width: 1024px) {
+    .hero-title {
+        font-size: 5rem;
+    }
+
+    .artwork-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 2rem;
+    }
+
+    .section {
+        padding: 8rem 0;
+    }
+
+    /* CTA Desktop Layout */
+    .cta-actions {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.5rem;
+        max-width: 1000px;
+    }
+
+    .cta-btn {
+        min-width: 360px;
+    }
+
+    .cta-title {
+        font-size: 3.5rem;
+    }
+
+    .cta-section {
+        padding: 4rem 3rem;
+    }
+
+    /* Desktop lightbox optimizations */
+    .lightbox-content {
+        width: 85vw;
+        max-width: 1200px;
+        max-height: 85vh;
+    }
+
+    .lightbox-image {
+        max-height: 65vh;
+    }
+}
+
+/* LARGE DESKTOP (1280px and up) */
+@media (min-width: 1280px) {
+    .hero-title {
+        font-size: 6rem;
+    }
+
+    .container {
+        max-width: 1600px;
+    }
+
+    .nav-content {
+        max-width: 1600px;
+    }
+
+    .artwork-grid {
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        gap: 2.5rem;
+    }
+}
+
+/* EXTRA LARGE DESKTOP (1536px and up) */
+@media (min-width: 1536px) {
+    .hero-title {
+        font-size: 7rem;
+    }
+
+    .artwork-grid {
+        grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+        gap: 3rem;
+    }
+
+    .section {
+        padding: 10rem 0;
+    }
+}
+
+/* MOBILE SPECIFIC STYLES (up to 767px) */
+@media (max-width: 767px) {
+    .nav-links {
+        display: none;
+    }
+
+    .mobile-menu-button {
+        display: block;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .artwork-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+
+    /* MOBILE LIGHTBOX SPECIFIC FIXES */
+    .lightbox-content {
+        width: 95vw;
+        max-height: 95vh;
+        margin: 2.5vh auto;
+    }
+
+    .lightbox-image {
+        max-height: 40vh;
+    }
+
+    .lightbox-info {
+        padding: 1rem 1.5rem 1.5rem 1.5rem;
+        max-height: 50vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        position: relative;
+    }
+
+    .lightbox-info::after {
+        content: '';
+        position: sticky;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 20px;
+        background: linear-gradient(transparent, rgba(255, 255, 255, 0.9));
+        pointer-events: none;
+    }
+
+    .lightbox-header {
+        flex-direction: row;
+        align-items: flex-start;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .lightbox-title-section {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .lightbox-actions {
+        flex-shrink: 0;
+        gap: 0.5rem;
+    }
+
+    .lightbox-close {
+        top: 0.5rem;
+        right: 0.5rem;
+        width: 36px;
+        height: 36px;
+    }
+
+    /* MOBILE BUTTON ACCESSIBILITY */
+    .btn-primary, .btn-secondary {
+        min-height: 48px; /* Accessibility guideline minimum */
+    }
+
+    /* CTA Mobile Styles */
+    .cta-section {
+        padding: 2.5rem 1.5rem;
+    }
+
+    .cta-title {
+        font-size: 2.5rem;
+    }
+
+    .cta-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .cta-btn {
+        padding: 1.25rem 1.5rem;
+        min-width: auto;
+        width: 100%;
+    }
+
+    /* Mobile navigation improvements */
+    .mobile-menu {
+        width: 280px;
+    }
+
+    .mobile-menu-header {
+        padding: 1.5rem 1.5rem 1rem 1.5rem;
+    }
+
+    .mobile-nav-link {
+        padding: 1rem 1.5rem;
+        font-size: 1rem;
+    }
+
+    .mobile-menu-footer {
+        padding: 1rem 1.5rem 1.5rem 1.5rem;
+    }
+}
+
+/* SMALL MOBILE (up to 479px) */
+@media (max-width: 479px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    .section {
+        padding: 4rem 0;
+    }
+
+    .artwork-card {
+        border-radius: 16px;
+    }
+
+    .artwork-image {
+        border-radius: 12px 12px 0 0;
+    }
+
+    .artwork-content {
+        padding: 1rem;
+    }
+
+    .cta-section {
+        padding: 2rem 1rem;
+        border-radius: 24px;
+    }
+
+    .cta-title {
+        font-size: 2rem;
+    }
+
+    .cta-btn {
+        padding: 1rem 1.25rem;
+        gap: 1rem;
+    }
+
+    .mobile-menu {
+        width: 100vw;
+        right: -100vw;
+    }
+
+    .mobile-menu.open {
+        right: 0;
+    }
+}
+
+/* LANDSCAPE MOBILE */
+@media (max-height: 600px) and (orientation: landscape) {
+    .hero-section {
+        min-height: 80vh;
+    }
+
+    .hero-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+        margin-bottom: 2rem;
+    }
+
+    .section {
+        padding: 3rem 0;
+    }
+
+    /* Lightbox adjustments for landscape */
+    .lightbox-content {
+        max-height: 90vh;
+        flex-direction: row;
+    }
+
+    .lightbox-image {
+        max-height: 85vh;
+        max-width: 60%;
+        flex-shrink: 0;
+    }
+
+    .lightbox-info {
+        max-height: 85vh;
+        flex: 1;
+        overflow-y: auto;
+    }
+}
+
+/* HIGH DPI / RETINA DISPLAYS */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Enhance effects for high-DPI displays */
+    .glass-card {
+        backdrop-filter: blur(25px) saturate(200%);
+        -webkit-backdrop-filter: blur(25px) saturate(200%);
+    }
+
+    .modern-nav {
+        backdrop-filter: blur(25px) saturate(200%);
+    }
+
+    .artwork-card {
+        backdrop-filter: blur(25px) saturate(200%);
+    }
+}
+
+/* PRINT STYLES */
+@media print {
+    .modern-nav,
+    .mobile-menu,
+    .mobile-menu-button,
+    .lightbox-overlay,
+    .cta-section {
+        display: none !important;
+    }
+
+    .artwork-card {
+        break-inside: avoid;
+        background: white !important;
+        border: 1px solid #ccc !important;
+        box-shadow: none !important;
+    }
+
+    .hero-section {
+        background: white !important;
+        min-height: auto;
+        padding: 2rem 0;
+    }
+
+    .hero-title {
+        color: #2d3748 !important;
+        font-size: 3rem !important;
+    }
+
+    body {
+        background: white !important;
+        color: #2d3748 !important;
+    }
+}
+
+/* REDUCED MOTION PREFERENCES */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    .floating-1,
+    .floating-2,
+    .floating-3 {
+        animation: none;
+    }
+
+    html {
+        scroll-behavior: auto;
+    }
+}
+
+/* HIGH CONTRAST MODE */
+@media (prefers-contrast: high) {
+    .glass-card,
+    .artwork-card,
+    .modern-nav {
+        border: 2px solid #000;
+        background: rgba(255, 255, 255, 0.95);
+    }
+
+    .btn-primary {
+        background: #000;
+        color: #fff;
+        border: 2px solid #000;
+    }
+
+    .btn-secondary {
+        background: transparent;
+        color: #000;
+        border: 2px solid #000;
+    }
+}
+
+/* DARK MODE SUPPORT (Future Enhancement) */
+@media (prefers-color-scheme: dark) {
+    /* Placeholder for future dark mode implementation */
+    /* Currently not implemented as design is light-themed */
+}
