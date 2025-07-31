@@ -2,6 +2,15 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 📋 Development Tracking
+
+**IMPORTANT**: Always read `/PROJECT_PROGRESS.md` alongside this file before starting work. 
+
+- **CLAUDE.md** (this file): Technical architecture, commands, and project structure
+- **PROJECT_PROGRESS.md**: Current development state, active issues, completed work, and session context
+
+This dual-documentation system ensures complete context for AI agents across sessions.
+
 ## Project Overview
 
 This is a full-stack art portfolio blog for a young artist to showcase paintings and digital art. The platform features moderated commenting and contact forms, with the artist managing content and her father moderating interactions.
