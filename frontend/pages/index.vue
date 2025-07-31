@@ -192,6 +192,24 @@
                   {{ getCleanDescription(artwork) }}
                 </p>
 
+                <!-- Comments Preview -->
+                <div class="comments-preview mb-4">
+                  <div class="comments-count" v-if="getApprovedComments(artwork).length > 0">
+                    <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-4 w-4 text-pink-peony" />
+                    <span class="text-sm text-gray-500">
+                      {{ getApprovedComments(artwork).length }} {{ getApprovedComments(artwork).length === 1 ? 'comment' : 'comments' }}
+                    </span>
+                  </div>
+                  <div v-if="getApprovedComments(artwork).length > 0" class="latest-comment mt-2 p-3 bg-gray-50 rounded-lg">
+                    <p class="text-sm text-gray-600 line-clamp-2">
+                      "{{ getCommentContent(getApprovedComments(artwork)[0]) }}"
+                    </p>
+                    <span class="text-xs text-gray-400 mt-1 block">
+                      - {{ getCommentAuthor(getApprovedComments(artwork)[0]) }}
+                    </span>
+                  </div>
+                </div>
+
                 <!-- Modern Artwork Actions -->
                 <div class="artwork-actions">
                   <button @click.stop="openLightbox(artwork)" class="artwork-action-btn primary">
@@ -263,56 +281,124 @@
       </div>
     </section>
 
-    <!-- LIGHTBOX MODAL - MOVED OUTSIDE MAIN CONTENT -->
+    <!-- LIGHTBOX MODAL - REDESIGNED FOR BETTER VIEWPORT HANDLING -->
     <Teleport to="body">
       <div class="lightbox-overlay" :class="{ open: lightboxOpen }" @click="closeLightbox">
-        <div class="lightbox-content" @click.stop v-if="selectedArtwork">
+        <div class="lightbox-modal" @click.stop v-if="selectedArtwork">
           <button @click="closeLightbox" class="lightbox-close">
             <UIcon name="i-heroicons-x-mark" class="h-5 w-5" />
           </button>
 
-          <div v-if="getImageUrl(selectedArtwork)">
-            <NuxtImg
-                :src="getImageUrl(selectedArtwork)"
-                :alt="selectedArtwork.title"
-                class="lightbox-image"
-            />
+          <!-- Image Section -->
+          <div class="lightbox-image-section">
+            <div v-if="getImageUrl(selectedArtwork)" class="image-container">
+              <NuxtImg
+                  :src="getImageUrl(selectedArtwork)"
+                  :alt="selectedArtwork.title"
+                  class="lightbox-image"
+              />
+            </div>
           </div>
 
-          <div class="lightbox-info">
-            <div class="lightbox-header">
-              <div class="lightbox-title-section">
-                <h2 class="text-3xl font-bold mb-2 font-['Playfair_Display']"
-                    style="background: linear-gradient(135deg, #f4a6cd 0%, #f4a261 50%, #e76f51 100%);
-                           -webkit-background-clip: text;
-                           -webkit-text-fill-color: transparent;
-                           background-clip: text;">
-                  {{ selectedArtwork.title }}
-                </h2>
-                <span class="artwork-category" :class="getCategoryClass(selectedArtwork.category)">
-                  {{ selectedArtwork.category }}
-                </span>
+          <!-- Content Section with Fixed Header -->
+          <div class="lightbox-content-section">
+            <!-- Fixed Header -->
+            <div class="content-header-fixed">
+              <!-- Mobile Layout -->
+              <div class="mobile-header">
+                <div class="title-row">
+                  <h2 class="artwork-title">{{ selectedArtwork.title }}</h2>
+                  <span class="artwork-category" :class="getCategoryClass(selectedArtwork.category)">
+                    {{ selectedArtwork.category }}
+                  </span>
+                </div>
+                <div class="date-row" v-if="selectedArtwork.createdAt">
+                  <p class="artwork-date-text">
+                    {{ formatDate(selectedArtwork.createdAt) }}
+                  </p>
+                  <div class="action-buttons-inline">
+                    <button @click="toggleFavorite(selectedArtwork)" class="action-btn">
+                      <UIcon name="i-heroicons-heart" class="h-4 w-4" />
+                    </button>
+                    <button @click="shareArtwork(selectedArtwork)" class="action-btn">
+                      <UIcon name="i-heroicons-share" class="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="lightbox-actions">
-                <button @click="toggleFavorite(selectedArtwork)" class="btn-secondary !p-3">
-                  <UIcon name="i-heroicons-heart" class="h-5 w-5" />
-                </button>
-                <button @click="shareArtwork(selectedArtwork)" class="btn-secondary !p-3">
-                  <UIcon name="i-heroicons-share" class="h-5 w-5" />
-                </button>
+              
+              <!-- Desktop Layout -->
+              <div class="desktop-header">
+                <h2 class="artwork-title">{{ selectedArtwork.title }}</h2>
+                <p v-if="selectedArtwork.createdAt" class="artwork-date-text">
+                  {{ formatDate(selectedArtwork.createdAt) }}
+                </p>
+                <div class="artwork-meta-row">
+                  <span class="artwork-category" :class="getCategoryClass(selectedArtwork.category)">
+                    {{ selectedArtwork.category }}
+                  </span>
+                  <div class="action-buttons-inline">
+                    <button @click="toggleFavorite(selectedArtwork)" class="action-btn">
+                      <UIcon name="i-heroicons-heart" class="h-4 w-4" />
+                    </button>
+                    <button @click="shareArtwork(selectedArtwork)" class="action-btn">
+                      <UIcon name="i-heroicons-share" class="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="lightbox-description">
-              <p class="text-gray-700 leading-relaxed text-lg">
-                {{ getCleanDescription(selectedArtwork) }}
-              </p>
-            </div>
+            <!-- Scrollable Content -->
+            <div class="content-scroll-area">
+              <!-- Description -->
+              <div class="content-description">
+                <p>{{ getCleanDescription(selectedArtwork) }}</p>
+              </div>
 
-            <div class="lightbox-meta">
-              <div class="flex flex-wrap gap-4 text-sm text-gray-500">
-                <span>Category: {{ selectedArtwork.category }}</span>
-                <span v-if="selectedArtwork.createdAt">Created: {{ formatDate(selectedArtwork.createdAt) }}</span>
+              <!-- Comments Section -->
+              <div class="content-comments">
+                <div class="comments-header-simple">
+                  <h3>Comments ({{ getApprovedComments(selectedArtwork).length }})</h3>
+                  <button @click="toggleCommentForm" class="toggle-form-btn">
+                    <UIcon :name="showCommentForm ? 'i-heroicons-chevron-up' : 'i-heroicons-plus'" class="h-4 w-4" />
+                    {{ showCommentForm ? 'Cancel' : 'Add Comment' }}
+                  </button>
+                </div>
+
+                <!-- Comment Form -->
+                <div v-if="showCommentForm" ref="commentFormRef" class="quick-comment-form">
+                  <form @submit.prevent="submitComment">
+                    <div class="form-grid">
+                      <input v-model="commentForm.authorName" type="text" required maxlength="100" placeholder="Name" />
+                      <input v-model="commentForm.authorEmail" type="email" required placeholder="Email" />
+                    </div>
+                    <textarea v-model="commentForm.content" required maxlength="1000" rows="3" placeholder="Your thoughts..."></textarea>
+                    <div class="form-bottom">
+                      <span class="char-counter">{{ commentForm.content.length }}/1000</span>
+                      <button type="submit" class="submit-btn" :disabled="commentSubmitting">
+                        <UIcon v-if="commentSubmitting" name="i-heroicons-arrow-path" class="animate-spin" />
+                        {{ commentSubmitting ? 'Posting...' : 'Post Comment' }}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Comments List -->
+                <div class="comments-list-simple">
+                  <div v-if="getApprovedComments(selectedArtwork).length === 0" class="empty-comments">
+                    <p>No comments yet. Share your thoughts!</p>
+                  </div>
+                  <div v-else class="comment-items">
+                    <div v-for="comment in getApprovedComments(selectedArtwork)" :key="comment.id" class="comment-simple">
+                      <div class="comment-header-simple">
+                        <strong>{{ getCommentAuthor(comment) }}</strong>
+                        <span>{{ formatDate(getCommentDate(comment)) }}</span>
+                      </div>
+                      <p>{{ getCommentContent(comment) }}</p>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -329,6 +415,16 @@ const mobileMenuOpen = ref(false)
 // Lightbox state
 const lightboxOpen = ref(false)
 const selectedArtwork = ref(null)
+
+// Comment form state
+const showCommentForm = ref(false)
+const commentSubmitting = ref(false)
+const commentFormRef = ref(null)
+const commentForm = ref({
+  authorName: '',
+  authorEmail: '',
+  content: ''
+})
 
 // API connection
 const config = useRuntimeConfig()
@@ -372,9 +468,41 @@ const closeLightbox = () => {
   console.log('Closing lightbox') // Debug
   lightboxOpen.value = false
   selectedArtwork.value = null
+  showCommentForm.value = false
+  // Reset comment form
+  commentForm.value = {
+    authorName: '',
+    authorEmail: '',
+    content: ''
+  }
   // Restore scrolling
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'auto'
+  }
+}
+
+// Toggle comment form with smooth scrolling
+const toggleCommentForm = async () => {
+  showCommentForm.value = !showCommentForm.value
+  
+  // If opening the form, scroll to it smoothly (especially important on mobile)
+  if (showCommentForm.value) {
+    // Wait for the form to render
+    await nextTick()
+    
+    if (commentFormRef.value) {
+      // Check if we're on mobile (viewport width <= 768px)
+      const isMobile = window.innerWidth <= 768
+      
+      if (isMobile) {
+        // On mobile, scroll the form into view with smooth behavior
+        commentFormRef.value.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+          inline: 'nearest'
+        })
+      }
+    }
   }
 }
 
@@ -396,6 +524,47 @@ const shareArtwork = (artwork) => {
     // Fallback: Copy to clipboard
     navigator.clipboard.writeText(window.location.href)
     console.log('Link copied to clipboard!')
+  }
+}
+
+// Comment submission
+const submitComment = async () => {
+  if (!selectedArtwork.value || commentSubmitting.value) return
+  
+  try {
+    commentSubmitting.value = true
+    
+    const response = await $fetch('/api/comments', {
+      baseURL: config.public.strapiUrl,
+      method: 'POST',
+      body: {
+        data: {
+          content: commentForm.value.content,
+          authorName: commentForm.value.authorName,
+          authorEmail: commentForm.value.authorEmail,
+          artwork: selectedArtwork.value.id,
+          approved: false // Comments require moderation
+        }
+      }
+    })
+    
+    // Reset form
+    commentForm.value = {
+      authorName: '',
+      authorEmail: '',
+      content: ''
+    }
+    showCommentForm.value = false
+    
+    // Show success message
+    console.log('Comment submitted successfully! It will appear after moderation.')
+    // TODO: Add toast notification
+    
+  } catch (error) {
+    console.error('Failed to submit comment:', error)
+    // TODO: Add error notification
+  } finally {
+    commentSubmitting.value = false
   }
 }
 
@@ -475,6 +644,44 @@ const getCategoryClass = (category) => {
 const getFloatingClass = (index) => {
   const classes = ['floating-1', 'floating-2', 'floating-3']
   return classes[index % 3]
+}
+
+const getApprovedComments = (artwork) => {
+  if (!artwork.comments) {
+    return []
+  }
+  
+  // Handle different Strapi response structures
+  let comments = []
+  if (artwork.comments.data) {
+    comments = artwork.comments.data
+  } else if (Array.isArray(artwork.comments)) {
+    comments = artwork.comments
+  }
+  
+  // Filter for approved comments only
+  return comments.filter(comment => {
+    // Handle both direct attribute access and nested attributes
+    const approved = comment.approved !== undefined ? comment.approved : comment.attributes?.approved
+    return approved === true
+  }).sort((a, b) => {
+    // Sort by creation date, newest first
+    const dateA = new Date(a.createdAt || a.attributes?.createdAt)
+    const dateB = new Date(b.createdAt || b.attributes?.createdAt)
+    return dateB - dateA
+  })
+}
+
+const getCommentContent = (comment) => {
+  return comment.content || comment.attributes?.content || ''
+}
+
+const getCommentAuthor = (comment) => {
+  return comment.authorName || comment.attributes?.authorName || 'Anonymous'
+}
+
+const getCommentDate = (comment) => {
+  return comment.createdAt || comment.attributes?.createdAt || new Date().toISOString()
 }
 
 // Cleanup on unmount
