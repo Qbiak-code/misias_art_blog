@@ -1,84 +1,19 @@
 <template>
   <div>
     <!-- MODERN GLASSMORPHISM NAVIGATION -->
-    <nav class="modern-nav">
-      <div class="nav-content">
-        <NuxtLink to="/" class="nav-logo">Misia's Art Portfolio</NuxtLink>
-        <ul class="nav-links">
-          <li><NuxtLink to="/" class="nav-link">Gallery</NuxtLink></li>
-          <li><NuxtLink to="/about" class="nav-link">About</NuxtLink></li>
-          <li><NuxtLink to="/contact" class="nav-link">Contact</NuxtLink></li>
-        </ul>
-        <button @click="toggleMobileMenu" class="md:hidden mobile-menu-button">
-          <div class="hamburger-icon" :class="{ active: mobileMenuOpen }">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </button>
-      </div>
-    </nav>
+    <AppHeader
+      :mobile-menu-open="mobileMenuOpen"
+      @toggle-mobile-menu="toggleMobileMenu"
+    />
 
     <!-- MOBILE MENU -->
-    <div class="mobile-menu-overlay" :class="{ open: mobileMenuOpen }" @click="closeMobileMenu"></div>
-    <div class="mobile-menu" :class="{ open: mobileMenuOpen }">
-      <div class="mobile-menu-header">
-        <div class="mobile-menu-logo">
-          <span class="mobile-menu-title">Misia's Art</span>
-          <span class="mobile-menu-subtitle">Portfolio</span>
-        </div>
-        <button @click="closeMobileMenu" class="mobile-close-button">
-          <UIcon name="i-heroicons-x-mark" class="h-5 w-5" />
-        </button>
-      </div>
-      
-      <nav class="mobile-nav-container">
-        <NuxtLink to="/" class="mobile-nav-link" @click="closeMobileMenu">
-          <UIcon name="i-heroicons-squares-2x2" class="mobile-nav-icon" />
-          <span>Gallery</span>
-          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
-        </NuxtLink>
-        <NuxtLink to="/about" class="mobile-nav-link" @click="closeMobileMenu">
-          <UIcon name="i-heroicons-user" class="mobile-nav-icon" />
-          <span>About</span>
-          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
-        </NuxtLink>
-        <NuxtLink to="/contact" class="mobile-nav-link" @click="closeMobileMenu">
-          <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="mobile-nav-icon" />
-          <span>Contact</span>
-          <UIcon name="i-heroicons-chevron-right" class="mobile-nav-arrow" />
-        </NuxtLink>
-      </nav>
-      
-      <div class="mobile-menu-footer">
-        <div class="mobile-footer-decoration"></div>
-        <p class="mobile-footer-text">Art that speaks to the soul</p>
-      </div>
-    </div>
+    <MobileMenu
+      :is-open="mobileMenuOpen"
+      @close="closeMobileMenu"
+    />
 
     <!-- BRUTAL MODERN HERO SECTION -->
-    <section class="hero-section">
-      <div class="hero-content floating-1">
-        <h1 class="hero-title">
-          Art That
-          <span class="block">Speaks</span>
-        </h1>
-        <p class="hero-subtitle">
-          Discover a vibrant world where color meets emotion,
-          and every brushstroke tells a story of boundless creativity.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-12 justify-center items-center mt-12">
-          <NuxtLink to="/gallery" class="btn-primary">
-            <UIcon name="i-heroicons-eye" class="h-5 w-5" />
-            Explore Collection
-          </NuxtLink>
-          <NuxtLink to="/about" class="btn-secondary">
-            <UIcon name="i-heroicons-heart" class="h-5 w-5" />
-            Meet the Artist
-          </NuxtLink>
-        </div>
-      </div>
-    </section>
+    <HeroSection />
 
     <!-- FEATURED ARTWORKS WITH GLASSMORPHISM -->
     <section class="section">
@@ -236,52 +171,7 @@
     </section>
 
     <!-- ENHANCED CALL TO ACTION -->
-    <section class="section relative overflow-hidden">
-      <div class="container">
-        <div class="cta-section floating-3">
-          <!-- Decorative Elements -->
-          <div class="cta-decoration"></div>
-          
-          <div class="cta-content">
-            <div class="cta-header">
-              <h2 class="cta-title">
-                Let's Create Together
-              </h2>
-              <div class="cta-subtitle-wrapper">
-                <p class="cta-subtitle">
-                  Whether you're interested in commissioning a piece, collaborating on a project,
-                  or simply want to share your thoughts about art—I'd love to hear from you.
-                </p>
-              </div>
-            </div>
-            
-            <div class="cta-actions">
-              <NuxtLink to="/contact" class="cta-btn primary">
-                <div class="cta-btn-icon">
-                  <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-5 w-5" />
-                </div>
-                <div class="cta-btn-content">
-                  <span class="cta-btn-title">Start a Conversation</span>
-                  <span class="cta-btn-desc">Get in touch about your ideas</span>
-                </div>
-                <UIcon name="i-heroicons-arrow-right" class="h-4 w-4 cta-btn-arrow" />
-              </NuxtLink>
-              
-              <NuxtLink to="/about" class="cta-btn secondary">
-                <div class="cta-btn-icon">
-                  <UIcon name="i-heroicons-user" class="h-5 w-5" />
-                </div>
-                <div class="cta-btn-content">
-                  <span class="cta-btn-title">Learn My Story</span>
-                  <span class="cta-btn-desc">Discover the artist behind the art</span>
-                </div>
-                <UIcon name="i-heroicons-arrow-right" class="h-4 w-4 cta-btn-arrow" />
-              </NuxtLink>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <CallToAction />
 
     <!-- LIGHTBOX MODAL - REDESIGNED FOR BETTER VIEWPORT HANDLING -->
     <Teleport to="body">

@@ -22,17 +22,17 @@ You are working on a full-stack art portfolio blog for a young artist. This file
 </template>
 
 <script setup>
-// Use Composition API
-// Import utilities from composables/
+  // Use Composition API
+  // Import utilities from composables/
 </script>
 
 <style scoped>
-/* Avoid - CSS goes in main.css or component-specific files */
+  /* Avoid - CSS goes in main.css or component-specific files */
 </style>
 ```
 
 ### CSS Architecture
-- **Main file**: `/frontend/assets/css/main.css` (currently 1200+ lines)
+- **Main file**: `/frontend/assets/css/main.css` (currently 1400+ lines)
 - **Naming**: Use BEM-style or semantic class names
 - **Colors**: Use CSS custom properties defined in `:root`
 - **Effects**: Glassmorphism with `backdrop-filter: blur()` and transparency
@@ -54,7 +54,7 @@ You are working on a full-stack art portfolio blog for a young artist. This file
 - **Spacing**: Follow established spacing patterns (1rem, 1.5rem, 2rem, 3rem)
 
 ## Current Architecture Issues
-- **Single-file monolith**: Everything in `index.vue` (471 lines) - needs refactoring
+- **Single-file monolith**: Everything in `index.vue` (471+ lines) - needs refactoring
 - **CSS organization**: All styles in one file - should be split
 - **No components**: Extract reusable components (buttons, cards, etc.)
 
@@ -102,21 +102,35 @@ await $fetch('/api/comments', {
 
 ## Current Development Priorities
 
-### **NEXT: Comments System Implementation**
-Based on PROJECT_PROGRESS.md, the comments system is the critical missing feature:
+### **NEXT: Component Extraction & Architecture**
+Based on PROJECT_PROGRESS.md, the comments system is now complete. Current priorities:
 
 **Copilot should help with:**
-- Comment form component boilerplate
-- Comment display component patterns
-- Form validation logic
-- API integration code
-- CSS for comment styling (following established patterns)
+- Extracting reusable components from the monolithic `index.vue`
+- Creating component boilerplate following established patterns
+- CSS utilities and composables for common functionality
+- Form validation patterns and API integration helpers
+- Component-specific CSS organization
+
+**Components ready for extraction:**
+- Comment form and display components (styles already exist)
+- Artwork card components with actions
+- Mobile menu component
+- CTA section component
+- Lightbox component
 
 **Areas to avoid (let Claude handle):**
-- Architecture decisions for comment moderation
-- UX decisions for comment placement
+- Major architectural restructuring decisions
 - Complex state management patterns
-- Integration with existing lightbox system
+- Routing and page structure changes
+- Backend integration architecture
+
+## Completed Features ✅
+- **Comments System**: Full implementation with form, display, moderation support
+- **Mobile Navigation**: Custom animated menu with glassmorphism
+- **Lightbox System**: Image viewing with comments integration
+- **CTA Section**: Modern design with gradient buttons
+- **Responsive Design**: Mobile-first approach implemented
 
 ## Responsive Breakpoints
 ```css
@@ -140,16 +154,23 @@ const getImageUrl = (artwork) => {
 const getCleanDescription = (artwork) => {
   // Handle various Strapi rich text formats
 }
+
+// Comments utilities (already implemented)
+const getApprovedComments = (artwork) => {
+  return artwork?.comments?.data?.filter(comment => 
+    comment.attributes.approved
+  ) || []
+}
 ```
 
 ## File Structure Context
 ```
 frontend/
 ├── pages/
-│   └── index.vue (main page - 471 lines, needs refactoring)
+│   └── index.vue (main page - 471+ lines, needs component extraction)
 ├── assets/css/
-│   └── main.css (1200+ lines of styles)
-├── components/ (empty - needs components)
+│   └── main.css (1400+ lines of styles, needs organization)
+├── components/ (empty - ready for extracted components)
 └── composables/ (empty - needs utilities)
 ```
 
@@ -172,5 +193,5 @@ Suggest: "This might be better handled by Claude Code for architectural planning
 ---
 
 **Last Updated**: July 31, 2025
-**Current Focus**: Comments system implementation
-**Architecture Status**: Single-file monolith, needs refactoring after core features complete
+**Current Focus**: Component extraction and CSS organization
+**Architecture Status**: Single-file monolith with complete feature set, ready for refactoring

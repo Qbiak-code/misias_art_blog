@@ -1,4 +1,3 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-30',
   devtools: { enabled: true },
@@ -6,7 +5,10 @@ export default defineNuxtConfig({
   // Explicitly enable pages (should be default but let's be explicit)
   pages: true,
 
-  components: true,
+  components: {
+    path: '~/components',
+    pathPrefix: false,
+  },
 
   // Add the required modules
   modules: [
