@@ -3,7 +3,7 @@
     <!-- MODERN GLASSMORPHISM NAVIGATION -->
     <nav class="modern-nav">
       <div class="nav-content">
-        <NuxtLink to="/" class="nav-logo">Misia's Portfolio</NuxtLink>
+        <NuxtLink to="/" class="nav-logo">Artist Portfolio</NuxtLink>
         <ul class="nav-links">
           <li><NuxtLink to="/" class="nav-link">Gallery</NuxtLink></li>
           <li><NuxtLink to="/about" class="nav-link">About</NuxtLink></li>
@@ -126,14 +126,29 @@
                 :key="artwork.id"
                 class="artwork-card group"
                 :class="getFloatingClass(index)"
-                @click="viewArtwork(artwork)"
+                @click="() => { console.log('Card clicked!'); openLightbox(artwork); }"
             >
-              <!-- Artwork Image Placeholder -->
+              <!-- Artwork Image -->
               <div class="artwork-image">
-                <div class="absolute inset-0 bg-gradient-to-br from-pink-peony/20 to-coral-pink/20"></div>
-                <UIcon name="i-heroicons-photo" class="h-20 w-20 text-white/60 z-10" />
-                <!-- Future: Replace with actual image -->
-                <!-- <NuxtImg v-if="artwork.image" :src="artwork.image.url" :alt="artwork.title" /> -->
+                <!-- Display actual image if available -->
+                <div v-if="getImageUrl(artwork)" class="relative">
+                  <NuxtImg
+                      :src="getImageUrl(artwork)"
+                      :alt="artwork.title"
+                      loading="lazy"
+                      @error="onImageError"
+                  />
+                  <!-- Hover overlay with magnifying glass - FIXED -->
+                  <div class="image-overlay">
+                    <div class="magnify-icon">
+                      <UIcon name="i-heroicons-magnifying-glass-plus" class="h-6 w-6 text-gray-800" />
+                    </div>
+                  </div>
+                </div>
+                <!-- Fallback for no image -->
+                <div v-else class="aspect-square bg-gradient-to-br from-pink-peony/20 to-coral-pink/20 flex items-center justify-center">
+                  <UIcon name="i-heroicons-photo" class="h-20 w-20 text-white/60" />
+                </div>
               </div>
 
               <!-- Artwork Content -->
@@ -147,20 +162,20 @@
                 </span>
 
                 <p class="text-gray-600 leading-relaxed mb-4 line-clamp-3">
-                  {{ artwork.description || 'A captivating piece that explores the boundaries between imagination and reality.' }}
+                  {{ getCleanDescription(artwork) }}
                 </p>
 
                 <!-- Artwork Actions -->
                 <div class="flex justify-between items-center pt-4 border-t border-white/10">
-                  <button class="text-coral-pink hover:text-pink-peony font-medium transition-colors flex items-center gap-2">
+                  <button @click.stop="openLightbox(artwork)" class="text-coral-pink hover:text-pink-peony font-medium transition-colors flex items-center gap-2">
                     <UIcon name="i-heroicons-eye" class="h-4 w-4" />
                     View Details
                   </button>
                   <div class="flex gap-3">
-                    <button class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
+                    <button @click.stop="toggleFavorite(artwork)" class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
                       <UIcon name="i-heroicons-heart" class="h-4 w-4 group-hover/btn:text-pink-peony transition-colors" />
                     </button>
-                    <button class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
+                    <button @click.stop="shareArtwork(artwork)" class="p-2 rounded-full hover:bg-pink-peony/10 transition-colors duration-200 group/btn">
                       <UIcon name="i-heroicons-share" class="h-4 w-4 group-hover/btn:text-pink-peony transition-colors" />
                     </button>
                   </div>
@@ -168,6 +183,7 @@
               </div>
             </article>
           </div>
+
         </div>
       </div>
     </section>
@@ -202,12 +218,73 @@
         </div>
       </div>
     </section>
+
+    <!-- LIGHTBOX MODAL - MOVED OUTSIDE MAIN CONTENT -->
+    <Teleport to="body">
+      <div class="lightbox-overlay" :class="{ open: lightboxOpen }" @click="closeLightbox">
+        <div class="lightbox-content" @click.stop v-if="selectedArtwork">
+          <button @click="closeLightbox" class="lightbox-close">
+            <UIcon name="i-heroicons-x-mark" class="h-5 w-5" />
+          </button>
+
+          <div v-if="getImageUrl(selectedArtwork)">
+            <NuxtImg
+                :src="getImageUrl(selectedArtwork)"
+                :alt="selectedArtwork.title"
+                class="lightbox-image"
+            />
+          </div>
+
+          <div class="lightbox-info">
+            <div class="lightbox-header">
+              <div class="lightbox-title-section">
+                <h2 class="text-3xl font-bold mb-2 font-['Playfair_Display']"
+                    style="background: linear-gradient(135deg, #f4a6cd 0%, #f4a261 50%, #e76f51 100%);
+                           -webkit-background-clip: text;
+                           -webkit-text-fill-color: transparent;
+                           background-clip: text;">
+                  {{ selectedArtwork.title }}
+                </h2>
+                <span class="artwork-category" :class="getCategoryClass(selectedArtwork.category)">
+                  {{ selectedArtwork.category }}
+                </span>
+              </div>
+              <div class="lightbox-actions">
+                <button @click="toggleFavorite(selectedArtwork)" class="btn-secondary !p-3">
+                  <UIcon name="i-heroicons-heart" class="h-5 w-5" />
+                </button>
+                <button @click="shareArtwork(selectedArtwork)" class="btn-secondary !p-3">
+                  <UIcon name="i-heroicons-share" class="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            <div class="lightbox-description">
+              <p class="text-gray-700 leading-relaxed text-lg">
+                {{ getCleanDescription(selectedArtwork) }}
+              </p>
+            </div>
+
+            <div class="lightbox-meta">
+              <div class="flex flex-wrap gap-4 text-sm text-gray-500">
+                <span>Category: {{ selectedArtwork.category }}</span>
+                <span v-if="selectedArtwork.createdAt">Created: {{ formatDate(selectedArtwork.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Teleport>
   </div>
 </template>
 
 <script setup>
 // Mobile menu state
 const mobileMenuOpen = ref(false)
+
+// Lightbox state
+const lightboxOpen = ref(false)
+const selectedArtwork = ref(null)
 
 // API connection
 const config = useRuntimeConfig()
@@ -216,6 +293,14 @@ const { data, pending, error, refresh } = await useFetch('/api/artworks', {
   baseURL: config.public.strapiUrl,
   query: {
     'populate': '*'
+  }
+})
+
+// Debug: Log the structure to understand image format
+watchEffect(() => {
+  if (data.value?.data?.length > 0) {
+    console.log('Artwork structure:', JSON.stringify(data.value.data[0], null, 2))
+    console.log('Image data:', data.value.data[0]?.image)
   }
 })
 
@@ -228,7 +313,112 @@ const closeMobileMenu = () => {
   mobileMenuOpen.value = false
 }
 
+// Lightbox functions
+const openLightbox = (artwork) => {
+  console.log('Opening lightbox for:', artwork.title) // Debug
+  selectedArtwork.value = artwork
+  lightboxOpen.value = true
+  // Prevent background scrolling
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'hidden'
+  }
+}
+
+const closeLightbox = () => {
+  console.log('Closing lightbox') // Debug
+  lightboxOpen.value = false
+  selectedArtwork.value = null
+  // Restore scrolling
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'auto'
+  }
+}
+
+// Artwork interaction functions
+const toggleFavorite = (artwork) => {
+  // Future: Add to favorites functionality
+  console.log('Toggling favorite for:', artwork.title)
+}
+
+const shareArtwork = (artwork) => {
+  // Future: Share functionality
+  if (navigator.share) {
+    navigator.share({
+      title: artwork.title,
+      text: getCleanDescription(artwork),
+      url: window.location.href
+    })
+  } else {
+    // Fallback: Copy to clipboard
+    navigator.clipboard.writeText(window.location.href)
+    console.log('Link copied to clipboard!')
+  }
+}
+
 // Helper functions
+const getImageUrl = (artwork) => {
+  // Handle different Strapi image response structures
+  if (artwork?.image) {
+    // Check for direct URL
+    if (artwork.image.url) {
+      return `${config.public.strapiUrl}${artwork.image.url}`
+    }
+    // Check for data array structure (Strapi v4+)
+    if (artwork.image.data && artwork.image.data.length > 0) {
+      return `${config.public.strapiUrl}${artwork.image.data[0].attributes.url}`
+    }
+    // Check for single data object structure
+    if (artwork.image.data && artwork.image.data.attributes) {
+      return `${config.public.strapiUrl}${artwork.image.data.attributes.url}`
+    }
+  }
+  return null
+}
+
+const getCleanDescription = (artwork) => {
+  if (!artwork.description) {
+    return 'A captivating piece that explores the boundaries between imagination and reality.'
+  }
+
+  // Check if description is a string
+  if (typeof artwork.description === 'string') {
+    return artwork.description
+  }
+
+  // Handle Strapi rich text format
+  if (Array.isArray(artwork.description)) {
+    return artwork.description
+        .map(block => {
+          if (block.type === 'paragraph' && block.children) {
+            return block.children.map(child => child.text || '').join('')
+          }
+          return ''
+        })
+        .join(' ')
+        .trim()
+  }
+
+  // Handle single rich text object
+  if (artwork.description.type === 'paragraph' && artwork.description.children) {
+    return artwork.description.children.map(child => child.text || '').join('')
+  }
+
+  // Fallback
+  return 'A beautiful artwork waiting to tell its story.'
+}
+
+const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('en-GB', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })
+}
+
+const onImageError = (event) => {
+  console.log('Image failed to load:', event.target.src)
+}
+
 const getCategoryClass = (category) => {
   const classes = {
     'Paintings': 'category-paintings',
@@ -243,10 +433,29 @@ const getFloatingClass = (index) => {
   return classes[index % 3]
 }
 
-const viewArtwork = (artwork) => {
-  // Future: Navigate to artwork detail page
-  console.log('Viewing artwork:', artwork.title)
-}
+// Cleanup on unmount
+onUnmounted(() => {
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'auto'
+  }
+})
+
+// Handle escape key for lightbox
+onMounted(() => {
+  const handleEscape = (e) => {
+    if (e.key === 'Escape' && lightboxOpen.value) {
+      closeLightbox()
+    }
+  }
+
+  if (typeof document !== 'undefined') {
+    document.addEventListener('keydown', handleEscape)
+
+    onUnmounted(() => {
+      document.removeEventListener('keydown', handleEscape)
+    })
+  }
+})
 
 // SEO
 useHead({
