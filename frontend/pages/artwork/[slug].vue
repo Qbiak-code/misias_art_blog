@@ -92,9 +92,6 @@
                 <h1 class="artwork-title">{{ artwork.title }}</h1>
                 
                 <div class="artwork-actions">
-                  <button @click="toggleFavorite" class="action-button favorite" :class="{ active: isFavorited }">
-                    <UIcon :name="isFavorited ? 'i-heroicons-heart-solid' : 'i-heroicons-heart'" />
-                  </button>
                   <button @click="shareArtwork" class="action-button share">
                     <UIcon name="i-heroicons-share" />
                   </button>
@@ -324,7 +321,7 @@ const toggleMobileMenu = () => {
 
 // Composables
 const { fetchArtwork, fetchArtworks, getMediaUrl, submitComment: strapiSubmitComment } = useStrapi()
-const { toggleFavorite: toggleArtworkFavorite, isFavorite } = useArtwork()
+const { trackView } = useArtwork()
 
 // Fetch artwork data
 const { data: artworkResponse, pending, error } = await fetchArtwork(slug)
@@ -482,43 +479,20 @@ const submitComment = async () => {
   }
 }
 
-// Favorites
-const isFavorited = computed(() => {
-  return artwork.value ? isFavorite(artwork.value.id) : false
-})
-
-const toggleFavorite = () => {
-  if (artwork.value) {
-    toggleArtworkFavorite(artwork.value.id)
-  }
-}
-
-// Sharing
+// Sharing - placeholder for hybrid implementation
 const shareArtwork = async () => {
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: artwork.value.title,
-        text: `Check out "${artwork.value.title}" by Misia`,
-        url: window.location.href
-      })
-    } catch (error) {
-      // Fallback to clipboard
-      copyToClipboard()
-    }
-  } else {
-    copyToClipboard()
+  if (artwork.value) {
+    // TODO: Implement hybrid social sharing
+    console.log(`Share artwork: ${artwork.value.title}`)
   }
 }
 
-const copyToClipboard = async () => {
-  try {
-    await navigator.clipboard.writeText(window.location.href)
-    // Could add a toast notification here
-  } catch (error) {
-    console.error('Failed to copy to clipboard:', error)
+// Track view when artwork loads
+watch(artwork, (newArtwork) => {
+  if (newArtwork) {
+    trackView(newArtwork.id)
   }
-}
+}, { immediate: true })
 
 // Image modal for additional images
 const showImageModal = ref(false)

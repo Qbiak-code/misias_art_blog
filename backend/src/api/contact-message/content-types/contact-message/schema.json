@@ -36,6 +36,10 @@
     "replied": {
       "type": "boolean",
       "default": false
+    },
+    "forwardedToArtist": {
+      "type": "boolean",
+      "default": false
     }
   }
 }

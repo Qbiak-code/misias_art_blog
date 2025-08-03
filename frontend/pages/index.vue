@@ -21,7 +21,6 @@
       :pending="pending"
       :error="error"
       @refresh="refresh"
-      @toggle-favorite="toggleFavorite"
       @share-artwork="shareArtwork"
     />
 
@@ -38,7 +37,6 @@ const {
   isLoading, 
   error,
   loadArtworks,
-  toggleFavorite,
   shareArtwork
 } = useArtwork()
 

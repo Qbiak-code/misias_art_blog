@@ -137,9 +137,6 @@
                   <span>View Details</span>
                 </NuxtLink>
                 <div class="artwork-action-icons">
-                  <button @click.stop="$emit('toggle-favorite', artwork)" class="artwork-icon-btn" title="Add to favorites">
-                    <UIcon name="i-heroicons-heart" class="h-4 w-4" />
-                  </button>
                   <button @click.stop="$emit('share-artwork', artwork)" class="artwork-icon-btn" title="Share artwork">
                     <UIcon name="i-heroicons-share" class="h-4 w-4" />
                   </button>

@@ -9,7 +9,6 @@ export const useArtwork = () => {
   // Reactive state
   const artworks = ref([])
   const selectedArtwork = ref(null)
-  const favorites = ref(new Set())
   const currentCategory = ref('all')
   const isLoading = ref(false)
   const error = ref(null)
@@ -95,44 +94,12 @@ export const useArtwork = () => {
   }
 
   /**
-   * Toggle artwork as favorite
+   * Increment view count for artwork (placeholder - will be implemented with backend)
    * @param {string} artworkId - Artwork ID
    */
-  const toggleFavorite = (artworkId) => {
-    if (favorites.value.has(artworkId)) {
-      favorites.value.delete(artworkId)
-    } else {
-      favorites.value.add(artworkId)
-    }
-    
-    // Persist to localStorage
-    localStorage.setItem('artwork-favorites', JSON.stringify([...favorites.value]))
-  }
-
-  /**
-   * Check if artwork is favorited
-   * @param {string} artworkId - Artwork ID
-   * @returns {boolean}
-   */
-  const isFavorite = (artworkId) => {
-    return favorites.value.has(artworkId)
-  }
-
-  /**
-   * Load favorites from localStorage
-   */
-  const loadFavorites = () => {
-    if (process.client) {
-      try {
-        const stored = localStorage.getItem('artwork-favorites')
-        if (stored) {
-          const favArray = JSON.parse(stored)
-          favorites.value = new Set(favArray)
-        }
-      } catch (err) {
-        console.warn('Error loading favorites:', err)
-      }
-    }
+  const trackView = (artworkId) => {
+    // TODO: Implement view tracking to backend
+    console.log(`View tracked for artwork ${artworkId}`)
   }
 
   /**
@@ -169,37 +136,13 @@ export const useArtwork = () => {
   }
 
   /**
-   * Share artwork
+   * Share artwork (placeholder - will be replaced with hybrid social sharing)
    * @param {object} artwork - Artwork object
    */
   const shareArtwork = async (artwork) => {
     if (!artwork) return
-
-    const shareData = {
-      title: artwork.title,
-      text: `Check out this amazing artwork: ${artwork.title}`,
-      url: window.location.origin + `/artwork/${artwork.slug || artwork.id}`
-    }
-
-    try {
-      if (navigator.share && navigator.canShare(shareData)) {
-        await navigator.share(shareData)
-      } else {
-        // Fallback: copy to clipboard
-        await navigator.clipboard.writeText(shareData.url)
-        // You might want to show a toast notification here
-        console.log('Link copied to clipboard!')
-      }
-    } catch (err) {
-      console.warn('Error sharing artwork:', err)
-      // Fallback: copy to clipboard
-      try {
-        await navigator.clipboard.writeText(shareData.url)
-        console.log('Link copied to clipboard!')
-      } catch (clipboardErr) {
-        console.error('Could not copy to clipboard:', clipboardErr)
-      }
-    }
+    // TODO: Implement hybrid social sharing system
+    console.log(`Share functionality for artwork: ${artwork.title}`)
   }
 
   /**
@@ -217,16 +160,10 @@ export const useArtwork = () => {
     }
   }
 
-  // Initialize favorites on client-side
-  if (process.client) {
-    loadFavorites()
-  }
-
   return {
     // State
     artworks: readonly(artworks),
     selectedArtwork: readonly(selectedArtwork),
-    favorites: readonly(favorites),
     currentCategory: readonly(currentCategory),
     isLoading: readonly(isLoading),
     error: readonly(error),
@@ -241,9 +178,7 @@ export const useArtwork = () => {
     setCategory,
     selectArtwork,
     clearSelection,
-    toggleFavorite,
-    isFavorite,
-    loadFavorites,
+    trackView,
     getArtworkByIdentifier,
     getArtworkImageUrl,
     getArtworkThumbnail,

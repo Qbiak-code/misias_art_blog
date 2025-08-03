@@ -2301,6 +2301,7 @@
     display: flex;
     gap: 0.5rem;
     flex-shrink: 0;
+    position: relative;
 }
 
 .action-button {
@@ -2329,6 +2330,7 @@
     color: white;
     border-color: transparent;
 }
+
 
 .artwork-description,
 .artwork-info,
