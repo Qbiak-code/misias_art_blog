@@ -2369,6 +2369,28 @@
     }
 }
 
+/* Artwork Stats */
+.artwork-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.stat-item svg {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+}
+
 
 .artwork-description,
 .artwork-info,

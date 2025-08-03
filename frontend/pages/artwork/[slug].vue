@@ -106,6 +106,10 @@
 
               <!-- Artwork Info -->
               <div class="artwork-info">
+                <div class="info-item">
+                  <span class="info-label">Views</span>
+                  <span class="info-value">{{ formatViewCount(artwork.views || 0) }}</span>
+                </div>
                 <div class="info-item" v-if="artwork.category">
                   <span class="info-label">Category</span>
                   <span class="info-value">{{ artwork.category }}</span>
@@ -328,7 +332,7 @@ const toggleMobileMenu = () => {
 
 // Composables
 const { fetchArtwork, fetchArtworks, getMediaUrl, submitComment: strapiSubmitComment } = useStrapi()
-const { trackView } = useArtwork()
+const { trackView, formatViewCount } = useArtwork()
 
 // Fetch artwork data
 const { data: artworkResponse, pending, error } = await fetchArtwork(slug)

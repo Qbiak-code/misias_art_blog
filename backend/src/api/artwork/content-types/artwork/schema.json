@@ -62,6 +62,11 @@
       "type": "boolean",
       "default": true
     },
+    "views": {
+      "type": "integer",
+      "default": 0,
+      "min": 0
+    },
     "comments": {
       "type": "relation",
       "relation": "oneToMany",

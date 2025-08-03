@@ -5,6 +5,7 @@
 
 export const useArtwork = () => {
   const { fetchArtworks, getImageUrl } = useStrapi()
+  const config = useRuntimeConfig()
 
   // Reactive state
   const artworks = ref([])
@@ -94,12 +95,34 @@ export const useArtwork = () => {
   }
 
   /**
-   * Increment view count for artwork (placeholder - will be implemented with backend)
+   * Track view for an artwork
    * @param {string} artworkId - Artwork ID
    */
-  const trackView = (artworkId) => {
-    // TODO: Implement view tracking to backend
-    console.log(`View tracked for artwork ${artworkId}`)
+  const trackView = async (artworkId) => {
+    if (!artworkId || !process.client) return
+
+    try {
+      const { data } = await $fetch(`/api/artworks/${artworkId}/view`, {
+        method: 'POST',
+        baseURL: config.public.strapiUrl
+      })
+      
+      // Update local artwork data with new view count
+      if (data?.views) {
+        const artworkIndex = artworks.value.findIndex(artwork => 
+          artwork.id === artworkId || artwork.documentId === artworkId
+        )
+        
+        if (artworkIndex !== -1) {
+          artworks.value[artworkIndex].views = data.views
+        }
+      }
+      
+      return data
+    } catch (error) {
+      console.warn('Failed to track view:', error)
+      // Don't throw error - view tracking should be non-blocking
+    }
   }
 
   /**
@@ -148,18 +171,32 @@ export const useArtwork = () => {
   }
 
   /**
-   * Get artwork stats (comments count, etc.)
+   * Get artwork stats (comments count, views, etc.)
    * @param {object} artwork - Artwork object
    * @returns {object}
    */
   const getArtworkStats = (artwork) => {
-    if (!artwork) return { commentsCount: 0 }
+    if (!artwork) return { commentsCount: 0, views: 0 }
     
     return {
       commentsCount: artwork.comments?.length || 0,
+      views: artwork.views || 0,
       isFeatured: artwork.featured || false,
       category: artwork.category || 'Uncategorized'
     }
+  }
+
+  /**
+   * Format view count for display
+   * @param {number} views - View count
+   * @returns {string}
+   */
+  const formatViewCount = (views) => {
+    if (!views || views === 0) return '0 views'
+    if (views === 1) return '1 view'
+    if (views < 1000) return `${views} views`
+    if (views < 1000000) return `${(views / 1000).toFixed(1)}k views`
+    return `${(views / 1000000).toFixed(1)}M views`
   }
 
   return {
@@ -185,6 +222,7 @@ export const useArtwork = () => {
     getArtworkImageUrl,
     getArtworkThumbnail,
     shareArtwork,
-    getArtworkStats
+    getArtworkStats,
+    formatViewCount
   }
 }

@@ -112,22 +112,31 @@
                 {{ getCleanDescription(artwork) }}
               </p>
 
-              <!-- Comments Preview -->
-              <div class="comments-preview mb-4">
-                <div class="comments-count" v-if="getApprovedComments(artwork).length > 0">
+              <!-- Artwork Stats -->
+              <div class="artwork-stats mb-4">
+                <!-- View Count -->
+                <div class="stat-item">
+                  <UIcon name="i-heroicons-eye" class="h-4 w-4 text-gray-400" />
+                  <span class="text-sm text-gray-500">{{ formatViewCount(artwork.views || 0) }}</span>
+                </div>
+                
+                <!-- Comments Count -->
+                <div class="stat-item" v-if="getApprovedComments(artwork).length > 0">
                   <UIcon name="i-heroicons-chat-bubble-left-ellipsis" class="h-4 w-4 text-pink-peony" />
                   <span class="text-sm text-gray-500">
-                      {{ getApprovedComments(artwork).length }} {{ getApprovedComments(artwork).length === 1 ? 'comment' : 'comments' }}
-                    </span>
+                    {{ getApprovedComments(artwork).length }} {{ getApprovedComments(artwork).length === 1 ? 'comment' : 'comments' }}
+                  </span>
                 </div>
-                <div v-if="getApprovedComments(artwork).length > 0" class="latest-comment mt-2 p-3 bg-gray-50 rounded-lg">
-                  <p class="text-sm text-gray-600 line-clamp-2">
-                    "{{ getCommentContent(getApprovedComments(artwork)[0]) }}"
-                  </p>
-                  <span class="text-xs text-gray-400 mt-1 block">
-                      - {{ getCommentAuthor(getApprovedComments(artwork)[0]) }}
-                    </span>
-                </div>
+              </div>
+
+              <!-- Latest Comment Preview -->
+              <div v-if="getApprovedComments(artwork).length > 0" class="latest-comment mb-4 p-3 bg-gray-50 rounded-lg">
+                <p class="text-sm text-gray-600 line-clamp-2">
+                  "{{ getCommentContent(getApprovedComments(artwork)[0]) }}"
+                </p>
+                <span class="text-xs text-gray-400 mt-1 block">
+                  - {{ getCommentAuthor(getApprovedComments(artwork)[0]) }}
+                </span>
               </div>
 
               <!-- Modern Artwork Actions -->
@@ -166,9 +175,10 @@ const props = defineProps({
   }
 })
 
-defineEmits(['refresh', 'toggle-favorite', 'share-artwork'])
+defineEmits(['refresh', 'share-artwork'])
 
 const config = useRuntimeConfig()
+const { formatViewCount } = useArtwork()
 
 // Helper functions
 const getImageUrl = (artwork) => {
