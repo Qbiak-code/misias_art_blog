@@ -30,13 +30,16 @@ export const useStrapi = () => {
   }
 
   /**
-   * Fetch single artwork by slug or ID
-   * @param {string} identifier - Artwork slug or ID
+   * Fetch single artwork by slug
+   * @param {string} slug - Artwork slug
    * @returns {Promise} - Single artwork data
    */
-  const fetchArtwork = (identifier) => {
-    return strapiApi(`/api/artworks/${identifier}`, {
-      query: { populate: '*' }
+  const fetchArtwork = (slug) => {
+    return strapiApi('/api/artworks', {
+      query: { 
+        'filters[slug][$eq]': slug,
+        'populate': '*'
+      }
     })
   }
 

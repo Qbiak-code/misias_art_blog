@@ -66,12 +66,12 @@
 
         <!-- Artwork Grid -->
         <div v-else class="artwork-grid">
-          <article
+          <NuxtLink
               v-for="(artwork, index) in artworks"
               :key="artwork.id"
+              :to="`/artwork/${artwork.slug}`"
               class="artwork-card group"
               :class="getFloatingClass(index)"
-              @click="() => { console.log('Card clicked!'); $emit('open-lightbox', artwork); }"
           >
             <!-- Artwork Image -->
             <div class="artwork-image">
@@ -132,10 +132,10 @@
 
               <!-- Modern Artwork Actions -->
               <div class="artwork-actions">
-                <button @click.stop="$emit('open-lightbox', artwork)" class="artwork-action-btn primary">
+                <NuxtLink :to="`/artwork/${artwork.slug}`" class="artwork-action-btn primary">
                   <UIcon name="i-heroicons-eye" class="h-4 w-4" />
                   <span>View Details</span>
-                </button>
+                </NuxtLink>
                 <div class="artwork-action-icons">
                   <button @click.stop="$emit('toggle-favorite', artwork)" class="artwork-icon-btn" title="Add to favorites">
                     <UIcon name="i-heroicons-heart" class="h-4 w-4" />
@@ -146,7 +146,7 @@
                 </div>
               </div>
             </div>
-          </article>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -169,7 +169,7 @@ const props = defineProps({
   }
 })
 
-defineEmits(['refresh', 'open-lightbox', 'toggle-favorite', 'share-artwork'])
+defineEmits(['refresh', 'toggle-favorite', 'share-artwork'])
 
 const config = useRuntimeConfig()
 
