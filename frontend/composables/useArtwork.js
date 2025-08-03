@@ -136,13 +136,15 @@ export const useArtwork = () => {
   }
 
   /**
-   * Share artwork (placeholder - will be replaced with hybrid social sharing)
+   * Share artwork using hybrid social sharing system
    * @param {object} artwork - Artwork object
    */
   const shareArtwork = async (artwork) => {
     if (!artwork) return
-    // TODO: Implement hybrid social sharing system
-    console.log(`Share functionality for artwork: ${artwork.title}`)
+    
+    // Use the social sharing composable
+    const { shareArtwork: hybridShare } = useSocialShare()
+    return await hybridShare(artwork)
   }
 
   /**

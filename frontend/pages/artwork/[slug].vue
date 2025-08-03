@@ -297,6 +297,13 @@
         />
       </div>
     </div>
+
+    <!-- Social Share Modal -->
+    <SocialShareModal 
+      :is-open="showShareModal" 
+      :artwork="artwork"
+      @close="showShareModal = false" 
+    />
   </div>
 </template>
 
@@ -479,11 +486,18 @@ const submitComment = async () => {
   }
 }
 
-// Sharing - placeholder for hybrid implementation
+// Social sharing
+const { shareArtwork: hybridShare, isMobile } = useSocialShare()
+const showShareModal = ref(false)
+
 const shareArtwork = async () => {
-  if (artwork.value) {
-    // TODO: Implement hybrid social sharing
-    console.log(`Share artwork: ${artwork.value.title}`)
+  if (!artwork.value) return
+
+  const result = await hybridShare(artwork.value)
+  
+  if (result.method === 'desktop' && !isMobile.value) {
+    // Show desktop social sharing modal
+    showShareModal.value = true
   }
 }
 

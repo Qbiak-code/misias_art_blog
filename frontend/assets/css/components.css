@@ -2331,6 +2331,44 @@
     border-color: transparent;
 }
 
+/* Share Success Toast */
+.share-success-toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(34, 197, 94, 0.95);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-medium);
+    z-index: 1000;
+    animation: slideUpFade 0.3s ease-out;
+}
+
+.share-success-toast .success-icon {
+    width: 1.2rem;
+    height: 1.2rem;
+    flex-shrink: 0;
+}
+
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(100%);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
 
 .artwork-description,
 .artwork-info,

@@ -27,6 +27,12 @@
     <!-- ENHANCED CALL TO ACTION -->
     <CallToAction />
 
+    <!-- Share Success Toast -->
+    <div v-if="shareSuccess" class="share-success-toast">
+      <UIcon name="i-heroicons-check-circle" class="success-icon" />
+      <span>Link copied to clipboard!</span>
+    </div>
+
   </div>
 </template>
 
@@ -39,6 +45,8 @@ const {
   loadArtworks,
   shareArtwork
 } = useArtwork()
+
+const { shareSuccess } = useSocialShare()
 
 
 // Mobile menu state
