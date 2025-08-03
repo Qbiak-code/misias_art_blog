@@ -42,40 +42,44 @@
 </template>
 
 <script setup>
+// Import composables
+const { 
+  artworks, 
+  selectedArtwork, 
+  isLoading, 
+  error,
+  loadArtworks,
+  selectArtwork,
+  clearSelection,
+  toggleFavorite,
+  shareArtwork
+} = useArtwork()
+
+const {
+  commentForm,
+  isSubmitting: commentSubmitting,
+  showCommentForm,
+  submitMessage,
+  submitMessageType,
+  handleSubmitComment,
+  resetForm: resetCommentForm
+} = useComments()
+
 // Mobile menu state
 const mobileMenuOpen = ref(false)
 
 // Lightbox state
 const lightboxOpen = ref(false)
-const selectedArtwork = ref(null)
 
-// Comment form state
-const showCommentForm = ref(false)
-const commentSubmitting = ref(false)
-const commentFormRef = ref(null)
-const commentForm = ref({
-  authorName: '',
-  authorEmail: '',
-  content: ''
-})
+// Load artworks on page load
+await loadArtworks()
 
-// API connection
-const config = useRuntimeConfig()
-
-const { data, pending, error, refresh } = await useFetch('/api/artworks', {
-  baseURL: config.public.strapiUrl,
-  query: {
-    'populate': '*'
-  }
-})
-
-// Debug: Log the structure to understand image format
-watchEffect(() => {
-  if (data.value?.data?.length > 0) {
-    console.log('Artwork structure:', JSON.stringify(data.value.data[0], null, 2))
-    console.log('Image data:', data.value.data[0]?.image)
-  }
-})
+// Computed properties for template
+const data = computed(() => ({
+  data: artworks.value
+}))
+const pending = computed(() => isLoading.value)
+const refresh = loadArtworks
 
 // Mobile menu functions
 const toggleMobileMenu = () => {
@@ -88,9 +92,11 @@ const closeMobileMenu = () => {
 
 // Lightbox functions
 const openLightbox = (artwork) => {
-  console.log('Opening lightbox for:', artwork.title) // Debug
-  selectedArtwork.value = artwork
+  console.log('Opening lightbox for:', artwork.title)
+  selectArtwork(artwork)
   lightboxOpen.value = true
+  // Set artwork for comments
+  commentForm.value.artwork = artwork
   // Prevent background scrolling
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'hidden'
@@ -98,16 +104,11 @@ const openLightbox = (artwork) => {
 }
 
 const closeLightbox = () => {
-  console.log('Closing lightbox') // Debug
+  console.log('Closing lightbox')
   lightboxOpen.value = false
-  selectedArtwork.value = null
+  clearSelection()
   showCommentForm.value = false
-  // Reset comment form
-  commentForm.value = {
-    authorName: '',
-    authorEmail: '',
-    content: ''
-  }
+  resetCommentForm()
   // Restore scrolling
   if (typeof document !== 'undefined') {
     document.body.style.overflow = 'auto'
@@ -123,13 +124,14 @@ const toggleCommentForm = async () => {
     // Wait for the form to render
     await nextTick()
     
-    if (commentFormRef.value) {
+    const commentFormElement = document.querySelector('.comment-form')
+    if (commentFormElement) {
       // Check if we're on mobile (viewport width <= 768px)
       const isMobile = window.innerWidth <= 768
       
       if (isMobile) {
         // On mobile, scroll the form into view with smooth behavior
-        commentFormRef.value.scrollIntoView({
+        commentFormElement.scrollIntoView({
           behavior: 'smooth',
           block: 'start',
           inline: 'nearest'
@@ -139,87 +141,19 @@ const toggleCommentForm = async () => {
   }
 }
 
-// Artwork interaction functions
-const toggleFavorite = (artwork) => {
-  // Future: Add to favorites functionality
-  console.log('Toggling favorite for:', artwork.title)
-}
+// Use composable functions directly for artwork interactions
+// toggleFavorite and shareArtwork are already imported from useArtwork()
 
-const shareArtwork = (artwork) => {
-  // Future: Share functionality
-  if (navigator.share) {
-    navigator.share({
-      title: artwork.title,
-      text: getCleanDescription(artwork),
-      url: window.location.href
-    })
-  } else {
-    // Fallback: Copy to clipboard
-    navigator.clipboard.writeText(window.location.href)
-    console.log('Link copied to clipboard!')
-  }
-}
-
-// Comment submission
+// Comment submission - use composable function
 const submitComment = async () => {
-  if (!selectedArtwork.value || commentSubmitting.value) return
-  
-  try {
-    commentSubmitting.value = true
-    
-    const response = await $fetch('/api/comments', {
-      baseURL: config.public.strapiUrl,
-      method: 'POST',
-      body: {
-        data: {
-          content: commentForm.value.content,
-          authorName: commentForm.value.authorName,
-          authorEmail: commentForm.value.authorEmail,
-          artwork: selectedArtwork.value.id,
-          approved: false // Comments require moderation
-        }
-      }
-    })
-    
-    // Reset form
-    commentForm.value = {
-      authorName: '',
-      authorEmail: '',
-      content: ''
-    }
+  const result = await handleSubmitComment()
+  if (result.success) {
     showCommentForm.value = false
-    
-    // Show success message
-    console.log('Comment submitted successfully! It will appear after moderation.')
-    // TODO: Add toast notification
-    
-  } catch (error) {
-    console.error('Failed to submit comment:', error)
-    // TODO: Add error notification
-  } finally {
-    commentSubmitting.value = false
   }
 }
 
-// Helper functions
-const getImageUrl = (artwork) => {
-  // Handle different Strapi image response structures
-  if (artwork?.image) {
-    // Check for direct URL
-    if (artwork.image.url) {
-      return `${config.public.strapiUrl}${artwork.image.url}`
-    }
-    // Check for data array structure (Strapi v4+)
-    if (artwork.image.data && artwork.image.data.length > 0) {
-      return `${config.public.strapiUrl}${artwork.image.data[0].attributes.url}`
-    }
-    // Check for single data object structure
-    if (artwork.image.data && artwork.image.data.attributes) {
-      return `${config.public.strapiUrl}${artwork.image.data.attributes.url}`
-    }
-  }
-  return null
-}
+// Helper functions - use composable utilities
+const { getImageUrl } = useStrapi()
 
 const getCleanDescription = (artwork) => {
   if (!artwork.description) {
@@ -279,30 +213,14 @@ const getFloatingClass = (index) => {
   return classes[index % 3]
 }
 
-const getApprovedComments = (artwork) => {
-  if (!artwork.comments) {
-    return []
-  }
+// Comment helper functions - using composables
+const { getArtworkComments, loadArtworkComments, formatCommentDate } = useComments()
+
+const getApprovedComments = async (artwork) => {
+  if (!artwork?.id && !artwork?.documentId) return []
   
-  // Handle different Strapi response structures
-  let comments = []
-  if (artwork.comments.data) {
-    comments = artwork.comments.data
-  } else if (Array.isArray(artwork.comments)) {
-    comments = artwork.comments
-  }
-  
-  // Filter for approved comments only
-  return comments.filter(comment => {
-    // Handle both direct attribute access and nested attributes
-    const approved = comment.approved !== undefined ? comment.approved : comment.attributes?.approved
-    return approved === true
-  }).sort((a, b) => {
-    // Sort by creation date, newest first
-    const dateA = new Date(a.createdAt || a.attributes?.createdAt)
-    const dateB = new Date(b.createdAt || b.attributes?.createdAt)
-    return dateB - dateA
-  })
+  const artworkId = artwork.id || artwork.documentId
+  return await loadArtworkComments(artworkId)
 }
 
 const getCommentContent = (comment) => {
@@ -314,7 +232,8 @@ const getCommentAuthor = (comment) => {
 }
 
 const getCommentDate = (comment) => {
-  return comment.createdAt || comment.attributes?.createdAt || new Date().toISOString()
+  const dateString = comment.createdAt || comment.attributes?.createdAt
+  return formatCommentDate(dateString)
 }
 
 // Cleanup on unmount

@@ -9,7 +9,7 @@
         Discover a vibrant world where color meets emotion,
         and every brushstroke tells a story of boundless creativity.
       </p>
-      <div class="flex flex-col sm:flex-row gap-12 justify-center items-center mt-12">
+      <div class="flex flex-col sm:flex-row gap-2 justify-center items-center mt-12">
         <BaseButton
           variant="primary"
           to="/gallery"
